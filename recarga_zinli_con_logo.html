@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recarga ZINLI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      padding: 20px;
+      text-align: center;
+    }
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    .container img {
+      max-width: 150px;
+      margin-bottom: 20px;
+    }
+    h2 {
+      color: #A7E92F;
+    }
+    .motivational-msg {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #A7E92F;
+      font-weight: bold;
+    }
+    input {
+      width: 80%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    button {
+      background: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      display: none;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.5s forwards;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="LOGO CAMBIO.png" alt="Logo Cambios">
+    <h2>Recarga ZINLI</h2>
+    <div class="motivational-msg">⚡ *Cambios* es tu mejor amigo para recargar tu ZINLI fácil, rápido y sin rollos.</div>
+    <input type="number" id="monto" placeholder="Monto a recargar ($)"><br>
+    <input type="number" id="tasa" placeholder="Tasa del día (Bs/$)"><br>
+    <button onclick="calcular()">Calcular</button>
+    <div class="result" id="resultado"></div>
+    <button onclick="enviarWhatsApp()">Enviar Pedido a WhatsApp</button>
+  </div>
+
+  <script>
+    function calcular() {
+      const monto = parseFloat(document.getElementById('monto').value);
+      const tasa = parseFloat(document.getElementById('tasa').value);
+
+      if (isNaN(monto) || isNaN(tasa)) {
+        document.getElementById('resultado').innerHTML = '⚠️ Ingresa ambos valores antes de enviar el pedido.';
+        document.getElementById('resultado').style.display = 'block';
+        return;
+      }
+
+      const comision = monto * 0.09;
+      const totalUSD = monto + comision;
+      const totalBs = totalUSD * tasa;
+
+      document.getElementById('resultado').innerHTML = `
+        <strong>Comisión 9%:</strong> $${comision.toFixed(2)}<br>
+        <strong>Total a Pagar ($):</strong> $${totalUSD.toFixed(2)}<br>
+        <strong>Total a Pagar (Bs):</strong> Bs${totalBs.toFixed(2)}
+      `;
+      document.getElementById('resultado').style.display = 'block';
+    }
+
+    function enviarWhatsApp() {
+      const monto = parseFloat(document.getElementById('monto').value);
+      const tasa = parseFloat(document.getElementById('tasa').value);
+
+      if (isNaN(monto) || isNaN(tasa)) {
+        alert('⚠️ Ingresa ambos valores antes de enviar el pedido.');
+        return;
+      }
+
+      const comision = monto * 0.09;
+      const totalUSD = monto + comision;
+      const totalBs = totalUSD * tasa;
+
+      const mensaje = `Pedido de Recarga ZINLI: 
+      - Monto: $${monto}
+      - Tasa del día: Bs${tasa}
+      - Comisión 9%: $${comision.toFixed(2)}
+      - Total en USD: $${totalUSD.toFixed(2)}
+      - Total en Bs: Bs${totalBs.toFixed(2)}`;
+
+      const telefono = '584128997428'; // Tu número de WhatsApp
+
+      const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
+      window.open(url, '_blank');
+    }
+  </script>
+</body>
+</html>
